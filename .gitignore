@@ -1,0 +1,4 @@
+trash.py
+venv/
+__pycache__/
+payment_server_db.db
