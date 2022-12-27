@@ -1,5 +1,5 @@
-from indication.api.routes import api
-from indication.api.controllers.get_address import get_address
+from indication.api.controllers import api
+from indication.api.services.get_address import get_address
 
 @api.route('/address/<int:user_id>', methods=["GET"])
 def address(user_id):

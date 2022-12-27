@@ -6,6 +6,7 @@ from indication import db
 def get_registration():
 
     username = request.json.get("username")
+    print(request.json)
     email = request.json.get("email")
     password = request.json.get("password")
     password2 = request.json.get("password2")   
@@ -16,35 +17,35 @@ def get_registration():
     regex_for_email = '[A-Za-z0-9._-]+@[a-z.-]+.[A-Z|a-z]'
     regex_for_password = '[a-z]+[a-z]+[a-z]+.+.+.+.'
 
-    errors = []
+    messages = []
 
     # check username
     if len(username) < 4 or len(username) > 25:
-        errors.append("Name of username is short")
+        messages.append("Name of username is short")
     if new_username:        
-        errors.append("User with this username already exists"), 400
+        messages.append("User with this username already exists"), 400
 
     # check email
     if bool(re.fullmatch(regex_for_email, email)) is False:
-        errors.append("Please enter a valid email")
+        messages.append("Please enter a valid email")
     if new_email:
-        errors.append("This email has already used"), 400
+        messages.append("This email has already used"), 400
     
     # check password
     if len(password) < 7:
-        errors.append("Password is short")
+        messages.append("Password is short")
     if bool(re.fullmatch(regex_for_password, password)) is False:
-        errors.append("Please enter a valid password")
+        messages.append("Please enter a valid password")
     if password2 != password:
-        errors.append("Please repeat the password correctly")
+        messages.append("Please repeat the password correctly")
 
-    if errors:
-        return jsonify({"Errors": errors}), 400
+    if messages:
+        return jsonify({"Errors": messages}), 400
         
     user = User(username=username, email=email)
     user.set_password(password)
     db.session.add(user)
     db.session.commit()
 
-    errors.append("Welcome to website")    
-    return jsonify({"OK": errors}), 200
+    messages.append("Welcome to website")    
+    return jsonify({"OK": messages}), 200
