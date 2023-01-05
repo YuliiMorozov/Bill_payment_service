@@ -8,7 +8,7 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(32))
     email = db.Column(db.String(64))
-    password_hash = db.Column(db.String(64))
+    password_hash = db.Column(db.String(280))
     joined_at = db.Column(db.DateTime, default=datetime.utcnow)
     
     # one-to-many with Address

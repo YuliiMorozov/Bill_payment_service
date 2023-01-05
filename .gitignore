@@ -6,4 +6,5 @@ migrations
 Dockerfile
 dbs
 instance
+.env
 migrations
