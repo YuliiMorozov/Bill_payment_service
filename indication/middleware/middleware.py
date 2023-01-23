@@ -1,6 +1,7 @@
-from base64 import decode
+import os
 from werkzeug.wrappers import Request, Response
 import jwt
+from dotenv import load_dotenv
 
 class Middleware():
 
@@ -8,6 +9,8 @@ class Middleware():
         self.app = app
 
     def __call__(self, environ, start_response):
+
+        load_dotenv()
 
         request = Request(environ)
         url = request.base_url
@@ -17,7 +20,7 @@ class Middleware():
             return self.app(environ, start_response)
         else:
             try:
-                jwt.decode(token.split()[1], "my_secret", algorithms=["HS256"])             
+                jwt.decode(token.split()[1], os.getenv('SECRET_KEY'), algorithms=["HS256"])             
             except:
                 res = Response('Authorization failed', mimetype='text/plain', status=401)
                 return res(environ, start_response)

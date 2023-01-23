@@ -1,7 +1,8 @@
+import os
 from flask import request, jsonify
 from indication.models import User
+from dotenv import load_dotenv
 import jwt
-
 
 def post_login():
     
@@ -21,10 +22,11 @@ def post_login():
     if messages:
         return jsonify({"Errors": messages}), 401
     
-    else:        
-        messages.append("Welcome to the website")
-        
-    access_token = jwt.encode({"email": email}, 'my_secret', algorithm="HS256")
+    else: 
+        messages.append("Welcome to the website")    
+    
+    load_dotenv()
+    access_token = jwt.encode({"email": email}, os.getenv('SECRET_KEY'), algorithm="HS256")
     return jsonify({"status": "success",
                     "detail": messages,
                     "access_token": access_token})

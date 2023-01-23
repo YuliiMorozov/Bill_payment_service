@@ -6,7 +6,6 @@ from indication import db
 def get_registration():
 
     username = request.json.get("username")
-    print(request.json)
     email = request.json.get("email")
     password = request.json.get("password")
     password2 = request.json.get("password2")   

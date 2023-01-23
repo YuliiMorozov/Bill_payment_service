@@ -4,20 +4,29 @@ from indication.models import TypeService
 
 def post_type_service():
 
-        name_service = request.json.get("name_service")       
-        new_service = TypeService.query.filter_by(name_service=name_service).first()
+    name_service = request.json.get("name_service")    
 
-        messages = []
+    messages = []
 
-        if new_service:
-            messages.append("This service has already been created")
+    new_service = (
+        db.session
+        .query(TypeService)
+        .filter_by(name_service=name_service)
+        .first()
+    )
 
-        if messages:
-            return jsonify({"Errors": messages}), 400  
+    if new_service:
+        messages.append("This service has already been created")
 
-        service = TypeService(name_service=name_service)
-        db.session.add(service)
-        db.session.commit()
+    if messages:
+        return jsonify({"Errors": messages}), 400  
 
-        messages.append("New service created")
-        return jsonify({"OK": messages}), 200
+    service = TypeService(
+        name_service=name_service
+    )
+    
+    db.session.add(service)
+    db.session.commit()
+
+    messages.append("New service created")
+    return jsonify({"OK": messages}), 200

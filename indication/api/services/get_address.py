@@ -1,9 +1,11 @@
 from flask import jsonify
+from indication.api.utils.cur_user import cur_user
 from indication.models import Address
 
-def get_address(user_id):
 
-    addresses = Address.query.filter_by(user_id=user_id).all()
+def get_address():
+
+    addresses = Address.query.filter_by(user_id=cur_user().id).all()
 
     if addresses == []:
         return jsonify({"status": "fail",

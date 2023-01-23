@@ -1,8 +1,5 @@
 from flask import jsonify
-from indication.models import User
+from indication.api.utils.cur_user import cur_user
 
 def get_home():
-    user = User.query.filter_by(username=User.username).first()
-    if user:
-        return jsonify({"msg": "Welcome to home page, " + user.username}), 200
-    return jsonify({"msg": "No users"}), 200
+    return jsonify(cur_user().username)
