@@ -13,7 +13,7 @@ def get_service_invoice(address_id):
         .all()
     )
 
-    invoice_2 = [] 
+    invoice_23 = [] 
     # f = []
     for service in all_services:   
 
