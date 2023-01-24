@@ -14,6 +14,11 @@ class ServiceInvoice(db.Model):
     # one-to-many with Address
     address_id = db.Column(db.Integer, db.ForeignKey('address.id'))
     # one-to-one with Price
-    price_id = db.Column(db.Integer, db.ForeignKey('price.id'))
+    # price_id = db.Column(db.Integer, db.ForeignKey('price.id'))
+    # one-to-one with ServiceRule
+    service_rule_id = db.Column(db.Integer, db.ForeignKey('servicerule.id'))
     # one-to-one with TypeService
+    # type_service_id = db.Column(db.Integer, db.ForeignKey('typeservice.id'))
+    # one-to-one with PaymentTransaction
+    payment_transaction_id = db.relationship('PaymentTransaction', backref='serviceinvoice', uselist=False)
     type_service_id = db.Column(db.Integer, db.ForeignKey('typeservice.id'))

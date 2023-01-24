@@ -1,48 +1,50 @@
 from flask import jsonify, request
 from indication import db
-from indication.models import ServiceInvoice, Price
+from indication.models import ServiceInvoice, ServiceRule
+from indication.api.utils.invoice_validator import validate_cur_value
 
 def post_service_invoice(address_id):
 
-    name_service = request.json.get("name_service")
+    type_service_id = request.json.get("type_service_id")    
     cur_value = request.json.get("cur_value")
 
-    gen =  ServiceInvoice.query.filter_by(address_id=address_id, type_service_id=name_service).order_by(ServiceInvoice.id.desc()).limit(2).all()
-
-    messages = []
-
-    try:
-        float(cur_value)
-
-        if float(cur_value) < 0:
-            messages.append("Error, meter readings cannot be negative")
-
-        elif gen != [] and float(cur_value) < float(gen[0].cur_value):
-            messages.append("Error, counter readings cannot be less than previous readings")
-
-    except:
-        messages.append("Error, meter readings must be in numeric format")
-
-    if messages:
+    prv_invoice = (
+        db.session
+        .query(ServiceInvoice)
+        .filter((ServiceInvoice.address_id == address_id) & (ServiceInvoice.type_service_id == type_service_id))
+        .order_by(ServiceInvoice.id.desc())
+        .first()
+    )
+    
+    servise_rule = (
+        db.session
+        .query(ServiceRule)
+        .filter(ServiceRule.type_service_id == type_service_id)
+        .order_by(ServiceRule.id.desc())
+        .first()
+    )
+     
+    errors = validate_cur_value(cur_value, prv_invoice)
+    if errors:
         return jsonify({"status": "fail",
-                        "detail": messages}), 400
+                        "detail": errors}), 400
 
-    inv = ServiceInvoice(
+    invoice = ServiceInvoice(
         address_id = address_id, 
+        prv_value = prv_invoice.cur_value
+            if prv_invoice
+            else 0.0,
         cur_value = cur_value,
-        prv_value = 0.0 if len(gen) == 0 else gen[0].cur_value,
-        type_service_id = name_service, 
-        price_id = name_service,
-        paid = 0,
-        duty = int(cur_value) * Price.query.get(name_service).rate 
-                if len(gen) == 0 
-                else gen[0].duty - gen[0].paid + int((int(cur_value) - gen[0].cur_value) * Price.query.get(name_service).rate),
+        paid = 0,    
+        duty = prv_invoice.duty - prv_invoice.paid + ((cur_value - prv_invoice.cur_value) * servise_rule.tax)
+            if prv_invoice
+            else cur_value * servise_rule.tax,    
+        service_rule_id = servise_rule.id,
+        type_service_id = type_service_id,
     )
 
-    db.session.add(inv)
+    db.session.add(invoice)
     db.session.commit()    
 
-    messages.append("Your meter readings have been taken")
-
     return jsonify({"status": "OK",
-                    "detail": messages}), 200
+                    "detail": "Your meter readings have been taken"}), 200

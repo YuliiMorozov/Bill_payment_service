@@ -13,6 +13,8 @@ class User(UserMixin, db.Model):
     
     # one-to-many with Address
     addresses = db.relationship('Address', backref='user', lazy='dynamic')
+    # one-to-many with PaymentTransaction
+    payment_transactions = db.relationship('PaymentTransaction', backref='user', lazy='dynamic')
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
