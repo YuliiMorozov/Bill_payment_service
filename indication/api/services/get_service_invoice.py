@@ -9,7 +9,7 @@ def get_service_invoice(address_id):
     serviceinvocie = ServiceInvoice.query.filter_by(address_id=address_id).order_by(ServiceInvoice.type_service_id.desc()).all()
     # print(type(serviceinvocie))
 
-    invoice_23 = [] 
+    invoice_234 = [] 
     # f = []
 
     for info in serviceinvocie:
@@ -32,9 +32,9 @@ def get_service_invoice(address_id):
 
 
 
-        invoice_23.append(payment_order) 
+        invoice_234.append(payment_order) 
         # for key in invoice:
             # print(key)
         # print(type(payment_order))   
     # print(f)
-    return jsonify(invoice_23), 200
+    return jsonify(invoice_234), 200
