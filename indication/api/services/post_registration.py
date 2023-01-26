@@ -10,8 +10,18 @@ def get_registration():
     password = request.json.get("password")
     password2 = request.json.get("password2")   
 
-    new_username = User.query.filter_by(username=username).first()
-    new_email = User.query.filter_by(email=email).first()
+    new_username = (
+        db.session
+        .query(User)
+        .filter_by(username=username)
+        .first()
+    )
+    new_email = (
+        db.session
+        .query(User)
+        .filter_by(email=email)
+        .first()
+    )
 
     regex_for_email = '[A-Za-z0-9._-]+@[a-z.-]+.[A-Z|a-z]'
     regex_for_password = '[a-z]+[a-z]+[a-z]+.+.+.+.'

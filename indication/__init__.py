@@ -1,5 +1,4 @@
 import os
-from dataclasses import dataclass
 from http.client import HTTPException
 from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
@@ -10,7 +9,6 @@ from flask_login import LoginManager
 from indication.api.exceptions.invoice_exceptions import InvalidUsage
 # from indication.api.exceptions.invoice_exceptions import CurrentValueError
 
-from flask.sessions import SecureCookieSessionInterface, SessionMixin
 
 db = SQLAlchemy()
 login_manager = LoginManager()
