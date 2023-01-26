@@ -16,12 +16,7 @@ login_manager.login_view = 'api.login'
 
 def create_app():
 
-    # class CustomSessionInterface(SecureCookieSessionInterface):
-    #     def should_set_cookie(self, app: "Flask", session: SessionMixin) -> bool:
-    #         return False
-
     app = Flask(__name__)
-    # app.session_interface = CustomSessionInterface()
     from flask_cors import CORS
 
     load_dotenv()
@@ -30,8 +25,6 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DB')
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    # app.config['SESSION_COOKIE_HTTPONLY'] = False
-    # app.config['SESSION_COOKIE_SAMESITE'] = None
     db.init_app(app)
     login_manager.init_app(app)
     migrate = Migrate(app, db, render_as_batch=True)    

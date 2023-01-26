@@ -10,6 +10,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(64))
     password_hash = db.Column(db.String(280))
     joined_at = db.Column(db.DateTime, default=datetime.utcnow)
+    is_admin = db.Column(db.Boolean, default=False)
     
     # one-to-many with Address
     addresses = db.relationship('Address', backref='user', lazy='dynamic')
