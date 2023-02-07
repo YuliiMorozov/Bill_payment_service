@@ -2,7 +2,7 @@ from flask import jsonify
 from indication import db
 from indication.api.utils.cur_user import cur_user
 from indication.models import Address, ServiceInvoice
-from indication.schema.service_invoice_schema import ServiceInvoiceSchema
+from indication.schemas.service_invoice_schema import ServiceInvoiceSchema
 
 
 def get_service_invoice(address_id):
