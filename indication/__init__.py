@@ -5,12 +5,14 @@ from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 from flask_migrate import Migrate
 from flask_login import LoginManager
+from flask_marshmallow import Marshmallow
 
 from indication.api.exceptions.invoice_exceptions import InvalidUsage
 # from indication.api.exceptions.invoice_exceptions import CurrentValueError
 
 
 db = SQLAlchemy()
+ma = Marshmallow()
 login_manager = LoginManager()
 login_manager.login_view = 'api.login'
 
@@ -26,6 +28,7 @@ def create_app():
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(app)
+    ma.init_app(app)
     login_manager.init_app(app)
     migrate = Migrate(app, db, render_as_batch=True)    
 

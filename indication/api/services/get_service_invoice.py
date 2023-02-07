@@ -2,6 +2,7 @@ from flask import jsonify
 from indication import db
 from indication.api.utils.cur_user import cur_user
 from indication.models import Address, ServiceInvoice
+from indication.schema.service_invoice_schema import ServiceInvoiceSchema
 
 
 def get_service_invoice(address_id):
@@ -13,7 +14,7 @@ def get_service_invoice(address_id):
         .first()
     )
 
-    invoices = (
+    invoices_request = (
         db.session
         .query(ServiceInvoice)
         .filter_by(address_id=address_id)
@@ -21,6 +22,8 @@ def get_service_invoice(address_id):
         .distinct(ServiceInvoice.type_service_id)
         .all()
     )
+
+    invoices = ServiceInvoiceSchema(many=True).dump(invoices_request)
 
     if address is None:
         return jsonify("Bad request. The address does`t belong to this user "), 400
