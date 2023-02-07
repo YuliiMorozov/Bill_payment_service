@@ -1,5 +1,5 @@
 from indication import ma
-from indication.models.type_service import TypeService
+from indication.models import TypeService
 
 class TypeServiceSchema(ma.SQLAlchemyAutoSchema):
     class Meta:

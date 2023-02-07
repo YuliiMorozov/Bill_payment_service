@@ -13,6 +13,8 @@ def get_service_invoice(address_id):
         .filter_by(user_id=cur_user().id, id=address_id)
         .first()
     )
+    if address is None:
+        return jsonify("Bad request. The address does`t belong to this user "), 400
 
     invoices_request = (
         db.session
@@ -24,8 +26,5 @@ def get_service_invoice(address_id):
     )
 
     invoices = ServiceInvoiceSchema(many=True).dump(invoices_request)
-
-    if address is None:
-        return jsonify("Bad request. The address does`t belong to this user "), 400
 
     return jsonify(invoices), 200

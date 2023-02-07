@@ -1,5 +1,5 @@
 from indication import ma
-from indication.models.serviceinvoice import ServiceInvoice
+from indication.models import ServiceInvoice
 from indication.schemas.service_rule_schema import ServiceRuleSchema
 from indication.schemas.type_service_schema import TypeServiceSchema
 

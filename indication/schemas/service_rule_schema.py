@@ -1,5 +1,5 @@
 from indication import ma
-from indication.models.service_rule import ServiceRule
+from indication.models import ServiceRule
 
 class ServiceRuleSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
