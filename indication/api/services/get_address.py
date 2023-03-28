@@ -2,6 +2,7 @@ from flask import jsonify
 from indication import db
 from indication.api.utils.cur_user import cur_user
 from indication.models import Address
+from indication.schemas.address_schema import AddressSchema
 
 
 def get_address():
@@ -13,7 +14,11 @@ def get_address():
         .all()
     )
 
-    if addresses == []:
-        return jsonify("You have no added addresses. Want to add?"), 200
+    type_services = AddressSchema(many=True).dump(addresses)
 
-    return jsonify(addresses), 200
+    return jsonify(type_services), 200
+
+    # if addresses == []:
+    #     return jsonify("You have no added addresses. Want to add?"), 200
+
+    # return jsonify(addresses), 200

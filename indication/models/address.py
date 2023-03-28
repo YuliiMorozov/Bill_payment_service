@@ -1,18 +1,8 @@
-from dataclasses import dataclass
 from indication import db
 from .address_type_service import address_type_service
 
-@dataclass
 class Address(db.Model):    
     __tablename__ = 'address'
-
-    id: int
-    country: str
-    city: str
-    street: str
-    house_number: str
-    flat_number: str
-    zip_code: str
 
     id = db.Column(db.Integer, primary_key=True)
     country = db.Column(db.String(24), unique=False, nullable=False)

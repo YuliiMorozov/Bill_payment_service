@@ -16,7 +16,7 @@ class Middleware():
         url = request.base_url
         token = request.headers.get('Authorization') 
 
-        if url.find("api/") == -1 or url.split("api/")[1] == "registration" or url.split("api/")[1] == "1" or url.split("api/")[1] == "login":
+        if url.find("api/") == -1 or url.split("api/")[1] == "registration" or url.split("api/")[1] == "1" or url.split("api/")[1] == "login" or url.split("api/")[1] == "stripe_test":
             return self.app(environ, start_response)
         else:
             try:

@@ -1,4 +1,5 @@
 import os
+import stripe
 from http.client import HTTPException
 from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
@@ -52,3 +53,10 @@ def create_app():
         return response
     
     return app
+
+load_dotenv()
+stripe_keys = {
+    "secret_key": os.environ["STRIPE_SECRET_KEY"],
+    "publishable_key": os.environ["STRIPE_PUBLISHABLE_KEY"],
+}
+stripe.api_key = stripe_keys["secret_key"]
